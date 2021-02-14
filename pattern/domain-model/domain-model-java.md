@@ -1,7 +1,9 @@
 <p align="center">
   <img src="./domain-model-9-3.png" alt="domain-model" title="Domain model" width="1066px" height="494px"/>
 </p>
+
 ### RevenueRecognition.java
+
 ```java
 class RevenueRecognition {
   private Money amount;
