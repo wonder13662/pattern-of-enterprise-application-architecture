@@ -23,7 +23,7 @@ class Contract {
     Iterator it = revenueRecognitions.iterator();
     while(it.hasNext()) {
       RevenueRecognition r = (RevenueRecognition) it.next();
-      if (r.isRecognizbleBy(asOf)) {
+      if (r.isRecognizableBy(asOf)) {
         result = result.add(r.getAmount())
       }
     }
