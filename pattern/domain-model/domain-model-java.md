@@ -2,27 +2,6 @@
   <img src="./domain-model-9-3.png" alt="domain-model" title="Domain model" width="1066px" height="494px"/>
 </p>
 
-### RevenueRecognition.java
-
-```java
-class RevenueRecognition {
-  private Money amount;
-  private MfDate date;
-
-  public RevenueRecognition(Money amount, MfDate date) {
-    this.amount = amount;
-    this.date = date;
-  }
-
-  public Money getAmount() {
-    return amount;
-  }
-
-  boolean isRecognizableBy(MfDate asOf) {
-    return asOf.after(date) || asOf.equals(date);
-  }
-}
-```
 ### Contract.java
 ```java
 class Contract {
@@ -57,6 +36,28 @@ class Contract {
   }
 }
 ```
+### RevenueRecognition.java
+
+```java
+class RevenueRecognition {
+  private Money amount;
+  private MfDate date;
+
+  public RevenueRecognition(Money amount, MfDate date) {
+    this.amount = amount;
+    this.date = date;
+  }
+
+  public Money getAmount() {
+    return amount;
+  }
+
+  boolean isRecognizableBy(MfDate asOf) {
+    return asOf.after(date) || asOf.equals(date);
+  }
+}
+```
+
 ### Product.java
 ```java
 class Product {
