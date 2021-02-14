@@ -92,3 +92,140 @@ class RevenueRecognition {
 <p align="center">
   <img src="./domain-model-9-3.png" alt="domain-model" title="Domain model" width="1021px" height="494px"/>
 </p>
+
+특정 날짜까지 인식된 수익을 계산하려면 다음과 같이 계약 클래스와 수익 인식 클래스를 모두 사용해야 한다.
+```java
+class Contract {
+  private List revenueRecognitions = new ArrayList();
+
+  public Money recognizedRevenue(MfDate asOf) {
+    Money result = Money.dollars(0);
+    Iterator it = revenueRecognitions.iterator();
+    while(it.hasNext()) {
+      RevenueRecognition r = (RevenueRecognition) it.next();
+      if (r.isRecognizbleBy(asOf)) {
+        result = result.add(r.getAmount())
+      }
+    }
+
+    return result;
+  }
+}
+```
+
+도메인 모델을 보고 쉽게 알 수 있는 사실은 간단한 작업을 할 때도 여러 클래스가 상호작용한다는 것이다. 그래서 객체지향 프로그램에서는 특정 클래스를 찾느라 클래스 사이를 돌아다니는 데 시간이 많이 걸린다고 불평하는 사람들도 많다. 그러나 단점만 있는 것은 아니다. 어떤 항목이 특정 날짜까지 인식되는지 여부를 판단하는 것이 더 복잡해질 때, 그리고 다른 객체들도 이를 알아야 할 때 도메인 모델의 장점이 드러난다. 알아야 할 동작을 해당 객체 안에 유지하는 방법으로 중복을 방지하고 다른 객체 간의 결합을 줄일 수 있다.
+
+이러한 수익 인식 객체의 생성과 계산 과정을 살펴보면 여러 작은 객체의 개념을 더 잘 알 수 있다. 이 예에서 생성과 계산은 고객과 함꼐 시작되어 상품을 통해 전략 계층으로 전달된다. [전략 패턴(Gang of Four)]은 잘 알려진 객체지향 패턴으로서, 이를 이용해 작업의 그룹을 작은 클래스 계층으로 결합할 수 있다. 상품의 각 인스턴스는 인식 전략의 단일 인스턴스에 연결되며, 여기서 어떤 알고리즘을 사용해 수익 인식을 계산할지 결정한다. 이 예에서는 두 가지 다른 수익 인식 방법에 대한 인식 전략의 하위 클래스 두 개가 있다. 코드의 구조는 다음과 같다.
+```java
+class Contract {
+  private Product product;
+  private Money revenue;
+  private MfDate whenSigned;
+  private Long id;
+
+  public Contract(Product product, Money revenue, MfDate whenSigned) {
+    this.product = product;
+    this.revenue = revenue;
+    this.whenSigned = whenSigned;
+  }
+}
+
+class Product {
+  private String name;
+  private RecognitionStrategy recognitionStrategy;
+
+  public Product(String name, RecognitionStrategy recognitionStrategy) {
+    this.name = name;
+    this.recognitionStrategy = recognitionStrategy;
+  }
+
+  public static Product newWordProcessor(String name) {
+    return new Product(name, new CompleteRecognitionStrategy());
+  }
+
+  public static Product newSpreadsheet(String name) {
+    return new Product(name, new ThreeWayRecognitionStrategy(60, 90));
+  }
+
+  public static Product newDataBase(String name) {
+    return new Product(name, new ThreeWayRecognitionStrategy(30, 60));
+  }
+}
+
+class RecognitionStrategy {
+  abstract void calculateRevenueRecognitions(Contract contract);
+}
+
+class CompleteRecognitionStrategy {
+  void calculateRevenueRecognitions(Contract contract) {
+    contract.addRevenueRecognition(new RevenueRecognition(contract.getRevenue(), contract.getWhenSigned()));
+  }
+}
+
+class ThreeWayRecognitionStrategy {
+  private int firstRecognitionOffset;
+  private int secondRecognitionOffset;
+
+  public ThreeWayRecognitionStrategy(int firstRecognitionOffset, int secondRecognitionOffset) {
+    this.firstRecognitionOffset = firstRecognitionOffset;
+    this.secondRecognitionOffset = secondRecognitionOffset;
+  }
+
+  void calculateRevenueRecognitions(Contract contract) {
+    Money[] allocation = contract.getRevenue().allocate(3);
+    contract.addRevenueRecognition(
+      new RevenueRecognition(
+        allocation[0],
+        contract.getWhenSigned())
+      );
+    contract.addRevenueRecognition(
+      new RevenueRecognition(
+        allocation[1],
+        contract.getWhenSigned().addDays(firstRecognitionOffset)
+      )
+    );
+    contract.addRevenueRecognition(
+      new RevenueRecognition(
+        allocation[2],
+        contract.getWhenSigned().addDays(secondRecognitionOffset)
+      )
+    );
+  }
+}
+```
+
+전략의 가장 큰 가치는 애플리케이션을 확장할 수 있는 잘 조직화된 연결점을 제공한다는 것이다. 새 수익 인식 알고리즘을 추가하려면 새 하위 클래스를 만들고 `calculateRevenueRecognitions` 메서드를 오버라이드하면 된다. 이와 같이 손쉽게 애플리케이션의 알고리즘 동작을 확장할 수 있다.
+
+새 상품을 만든 경우 상품을 적절한 전략 객체와 연결하면 된다. 테스트 코드에서는 다음과 같이 할 수 있다.
+```java
+class Tester {
+  private Product word = Product.newWordProcessor("Thinking Word");
+  private Product calc = Product.newSpreadsheet("Thinking calc");
+  private Product db = Product.newDataBase("Thinking DB");
+}
+```
+
+준비를 모두 완료하면 전략 하위 클래스에 대한 정보 없이도 수익 인식을 계산할 수 있다.
+
+```java
+class Contract {
+  public void calculateRecognitions() {
+    product.calculateRevenueRecognitions(this);
+  }
+}
+
+class Product {
+  void calculateRevenueRecognitions(Contract contract) {
+    recognitionStrategy.calculateRevenueRecognitions(contract);
+  }
+}
+```
+
+객체에서 객체로 전달하는 객체지향의 습관은 동작을 처리하기에 가장 적절한 객체로 이동할 뿐 아니라 조건부 동작도 대부분 해결한다. 이 계산에 조건이 없다는 것을 알 수 있다. 결정 경로는 상품을 만들 때 해당하는 전략으로 이미 설정했다. 이처럼 모든 것이 서로 연결된 후에는 알고리즘이 정해진 경로를 따라가기만 하면 된다. 도메인 모델은 비슷한 조건을 가지고 있을 때 아주 잘 작동하는데, 비슷한 조건은 팩터링을 거쳐 객체 구조 자체로 만들 수 있기 때문이다. 이처럼 복잡성을 알고리즘에서 분리하고 객체 간의 관계로 만들 수 있다. 논리가 비슷할수록 시스템의 다른 부분에서 동일한 관계의 네트워크가 사용되는 것을 더 많이 발견할 수 있다. 일종의 인식 계산을 이용하는 다른 모든 알고리즘에서도 이러한 객체의 특정 네트워크를 그대로 따를 수 있다.
+
+이 예제에서는 객체를 데이터베이스에서 가져오고 저장하는 방법은 전혀 보여주지 않았다. 여기에는 두가지 이유가 있다.
+
+1. 도메인 모델과 데이터베이스를 매핑하는 것은 힘든 작업이기 때문에 굳이 예제로 만들지 않았다.
+2. 도메인 모델을 사용하는 중요한 이유 중 하나는 상위 계층에서, 그리고 도메인 모델을 사용하는 사람들에게서 데이터베이스를 숨기는 것이다.
+
+따라서 여기서 데이터베이스를 숨김으로써 실제 환경의 프로그램이 어떤지를 보여줄 수 있다.
