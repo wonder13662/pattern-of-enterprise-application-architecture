@@ -34,6 +34,10 @@ class Contract {
   public void calculateRecognitions() {
     product.calculateRevenueRecognitions(this);
   }
+
+  public MfDate getWhenSigned() {
+    return this.whenSigned;
+  }
 }
 ```
 ### RevenueRecognition.java
@@ -116,8 +120,9 @@ class ThreeWayRecognitionStrategy {
     contract.addRevenueRecognition(
       new RevenueRecognition(
         allocation[0],
-        contract.getWhenSigned())
-      );
+        contract.getWhenSigned()
+      )
+    );
     contract.addRevenueRecognition(
       new RevenueRecognition(
         allocation[1],
