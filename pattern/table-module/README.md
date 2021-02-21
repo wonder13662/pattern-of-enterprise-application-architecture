@@ -135,3 +135,39 @@ class Contract {
 ```
 
 이러한 경우 일반적으로 필자는 [금액]()을 사용하지만 여기서는 다양한 방법을 보여주기 위해 decimal을 사용했다. 그리고 [금액]()에 사용하는 것과 비슷한 할당 메서드를 사용했다. 이 작업을 하려면 다른 클래스에 정의된 동작이 필요하다. 우선 상품은 자신이 어떤 종류인지 알려줄 수 있어야 한다. 이를 위해 상품 종류를 나타내는 열거형과 조회 메서드를 만든다.
+
+이 작업을 하려면 다른 클래스에 정의된 동작이 필요하다. 우선 상품은 자신이 어떤 종류인지 알려줄 수 있어야 한다. 이를 위해 상품 종류를 나타내는 열거형과 조회 메서드를 만든다.
+
+```csharp
+  public enum ProductType {WP, SS, DB};
+
+class Product {
+  public ProductType GetProductType (long id) {
+    String typeCode = (String) this[id]["type"];
+    return (ProductType) Enum.Parse(typeof(ProductType), typeCode);
+  }
+}
+```
+
+GetProductType은 이 정보를 데이터 테이블에 캡슐화한다. 앞서 계약 클래스에서는 총액에 직접 접근했지만, 이번에는 데이터의 모든 열에 대해 이 작업을 할 수 있도록 인수를 받았다. 캡슐화는 일반적으로 좋은 것이지만, 시스템의 다른 부분이 데이터 집합에 직접 접근하는 환경이라는 가정에는 맞지 않으므로 여기서는 캡슐화하지 않았다. 데이터 집합이 UI로 전달될 때는 캡슐화가 적용되지 않으므로 열 접근 함수는 문자열을 상품의 종류로 변환하는 등의 추가 기능을 수행해야 할 때만 의미가 있다.
+
+필자는 여러 플랫폼에서 좀 더 일반적인, 형식 없는 데이터 집합을 사용했지만, [.NET에서는 엄격한 형식의 데이터 집합을 사용해야 한다는 주장 - 539p]()에도 설득력이 있다는 것을 알아두자.
+
+다른 추가 동작은 새로운 수익 인식 레코드의 집합이다.
+
+```csharp
+class RevenueRecognition {
+  public long Insert (long contractID, Decimal amount, DateTime date) {
+    DataRow newRow = table.NewRow();
+    long id = GetNextID();
+    newRow["ID"] = id;
+    newRow["contractID"] = contractID;
+    newRow["amount"] = amount;
+    newRow["date"] = String.Format("{0:s}", date);
+    table.Rows.Add(newRow);
+    return id;
+  }
+}
+```
+
+이 메서드 역시 데이터 행의 캡슐화가 목적이 아니라 여러 행의 코드 반복 대신 메서드를 사용하기 위한 것이다.
