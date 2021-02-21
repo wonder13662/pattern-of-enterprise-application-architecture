@@ -171,3 +171,31 @@ class RevenueRecognition {
 ```
 
 이 메서드 역시 데이터 행의 캡슐화가 목적이 아니라 여러 행의 코드 반복 대신 메서드를 사용하기 위한 것이다.
+
+예제의 뒷부분에서는 계약에서 지정한 날까지 인식된 모든 수익의 합계를 얻는다. 이 코드에서는 수익 인식 테이블을 사용하므로 여기에 메서드를 정의하는 것이 합리적이다.
+
+```csharp
+class RevenueRecognition {
+  public Decimal RecognizedRevenue (long contractID, DateTime asOf) {
+    String filter = String.format("ContractID = {0} AND date <= #{1:d}#", contractID, asOf);
+    DataRow[] rows = table.Select(filter);
+    foreach (DataRow row in rows) {
+      result += (Decimal)row["amount"];
+    }
+    return result;
+  }
+}
+```
+
+이 코드에서는 where 절을 정의해 조작할 데이터 테이블의 부분 집합을 선택하는 ADO.NET의 아주 유용한 기능을 활용하고 있다. 여기서 더 나아가 집계함수를 사용할 수도 있다.
+
+```csharp
+class RevenueRecognition {
+  public Decimal RecognizedRevenue2 (long contractID, DateTime asOf) {
+    String filter = String.format("ContractID = {0} AND date <= #{1:d}#", contractID, asOf);
+    String computedExpression = "sum(amount)";
+    Object sum = table.Compute(computeExpression, filter);
+    return (sum is System.DBNull)? 0 : (Decimal) sum;
+  }
+}
+```
