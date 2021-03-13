@@ -4,3 +4,6 @@
 [Cockburn UC](https://www.amazon.com/Writing-Effective-Cases-Alistair-Cockburn/dp/0201702258/ref=sr_1_1?crid=1F3XZI5T2PYI2&dchild=1&keywords=writing+effective+use+cases&qid=1615159804&sprefix=Writing+Effective+Use+Cases%2Caps%2C328&sr=8-1) Writing Effective Use Cases
 [Coleman et al.](https://www.amazon.com/Object-Oriented-Development-Fusion-Derek-Coleman/dp/0133388239/ref=sr_1_1?dchild=1&keywords=Object-Oriented+Development%3A+The+Fusion+Method&qid=1615159949&sr=8-1) Object-Oriented Development: The Fusion Method
 [Marinescu](https://www.amazon.com/EJB-Design-Patterns-Advanced-Processes/dp/0471208310/ref=sr_1_1?dchild=1&keywords=ejb+design+patterns+marinescu&qid=1615158012&sr=8-1) EJB Design Patterns
+[Gang of Four](https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_2?dchild=1&keywords=gang+of+four&qid=1615597756&sr=8-2)
+
+[POJO](https://ko.wikipedia.org/wiki/Plain_Old_Java_Object)
