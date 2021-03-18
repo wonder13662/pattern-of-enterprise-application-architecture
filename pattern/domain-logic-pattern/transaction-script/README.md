@@ -27,9 +27,9 @@
   <img src="./transaction-script-9-1.png" alt="transaction-script" title="Transaction Script" width="762px" height="284px"/>
 </p>
 
-세심한 팩터링으로 이러한 여러 문제를 완화할 수 있지만 더 복잡한 비즈니스 도메인을 제대로 구현하려면 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)을 이용해야 한다. [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)은 코드를 구성하면서 가독성을 높이고 중복을 줄이기 위한 더 다양한 수단을 제공한다.
+세심한 팩터링으로 이러한 여러 문제를 완화할 수 있지만 더 복잡한 비즈니스 도메인을 제대로 구현하려면 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)을 이용해야 한다. [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)은 코드를 구성하면서 가독성을 높이고 중복을 줄이기 위한 더 다양한 수단을 제공한다.
 
-논리의 복잡도가 어느 수준 이상일 때 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)이 적합하다고 정확하게 말하기는 어렵다. 특히 둘 중 한 패턴에 익숙하다면 더 미묘하다. 트랜잭션 스크립트 설계를 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)설계로 리팩터링하는 것도 가능하지만, 필요 이상으로 어렵다. 따라서 리팩터링보다는 처움부터 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)로 설계하는 것이 유리하다.
+논리의 복잡도가 어느 수준 이상일 때 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)이 적합하다고 정확하게 말하기는 어렵다. 특히 둘 중 한 패턴에 익숙하다면 더 미묘하다. 트랜잭션 스크립트 설계를 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)설계로 리팩터링하는 것도 가능하지만, 필요 이상으로 어렵다. 따라서 리팩터링보다는 처움부터 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)로 설계하는 것이 유리하다.
 
 그러나 객체 신봉자라도 트랜잭션 스크립트를 처음부터 배제하는 것은 현명하지 않다. 우리가 해결해야 하는 문제 중에는 단순한 문제도 상당히 많으며, 단순한 문제는 단순한 해결책으로 훨씬 빨리 해결할 수 있다.
 
@@ -168,4 +168,4 @@ class Gateway {
 
 자바 시스템에서 인식 서비스는 일반 클래스나 세션 빈일 수 있다.
 
-이 예제를 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)의 예제와 비교해보면 사고방식이 아주 특이하지 않은 이상 이 예제가 훨씬 간단하다는데 동의할 것이다. 트랜잭션 스크립트의 문제는 규칙이 더 복잡해지면 해결하는 방법을 찾기 어렵다는 것이다. 일반적인 수익 인식 규칙은 매우 복잡해서 상품의 종류만이 아니라 날짜에 따라서도 달라질 수 있다(예: 4월 15일 이전 계약에 ... 규칙을 적용). 이렇게 규칙이 복잡해지면 트랜잭션 스크립트로는 일관된 설계를 유지하기가 어렵다. 필자를 비롯한 객체 신봉자가 이런 상황에 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)을 선호하는 것은 이 때문이다.
+이 예제를 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)의 예제와 비교해보면 사고방식이 아주 특이하지 않은 이상 이 예제가 훨씬 간단하다는데 동의할 것이다. 트랜잭션 스크립트의 문제는 규칙이 더 복잡해지면 해결하는 방법을 찾기 어렵다는 것이다. 일반적인 수익 인식 규칙은 매우 복잡해서 상품의 종류만이 아니라 날짜에 따라서도 달라질 수 있다(예: 4월 15일 이전 계약에 ... 규칙을 적용). 이렇게 규칙이 복잡해지면 트랜잭션 스크립트로는 일관된 설계를 유지하기가 어렵다. 필자를 비롯한 객체 신봉자가 이런 상황에 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)을 선호하는 것은 이 때문이다.

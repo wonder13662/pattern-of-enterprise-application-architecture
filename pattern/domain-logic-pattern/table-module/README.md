@@ -4,11 +4,11 @@
   <img src="./table-module-001.png" alt="domain-model" title="Domain model" width="601px" height="484px"/>
 </p>
 
-객체지향의 핵심 개념 중 하나는 데이터, 그리고 이를 사용하는 동작을 하나로 묶는 것이다. 기존의 객체지향 방식은 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)과 비슷한 맥락으로 식별자가 있는 객체에 기반을 두고 있다. 예를 들어, 직원이라는 클래스가 있을 때 이 클래스의 한 인스턴스는 특정한 직원에 해당한다. 이 체계는 한 직원에 대한 참조가 있으면 이 직원을 대상으로 작업 실행, 관계 확인, 데이터 수집 등을 수행할 수 있으므로 이해하기 쉽고 잘 동작한다.
+객체지향의 핵심 개념 중 하나는 데이터, 그리고 이를 사용하는 동작을 하나로 묶는 것이다. 기존의 객체지향 방식은 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)과 비슷한 맥락으로 식별자가 있는 객체에 기반을 두고 있다. 예를 들어, 직원이라는 클래스가 있을 때 이 클래스의 한 인스턴스는 특정한 직원에 해당한다. 이 체계는 한 직원에 대한 참조가 있으면 이 직원을 대상으로 작업 실행, 관계 확인, 데이터 수집 등을 수행할 수 있으므로 이해하기 쉽고 잘 동작한다.
 
-[도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)의 문제점 중 하나는 관계형 데이터베이스와의 인터페이스가 까다롭다는 것이다. 이 방식은 어떻게 보면 관계형 데이터베이스를 다락방에 혼자 지내며 아무하고도 대화하지 않는 미친 숙모처럼 취급한다고 할 수 있다. 이 때문에 데이터베이스와 데이터를 주고받은 작업이나, 데이터의 두 가지 다른 표현 사이를 변환하는 기본적인 작업에도 적지 않은 프로그래밍 노력이 필요하다.
+[도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)의 문제점 중 하나는 관계형 데이터베이스와의 인터페이스가 까다롭다는 것이다. 이 방식은 어떻게 보면 관계형 데이터베이스를 다락방에 혼자 지내며 아무하고도 대화하지 않는 미친 숙모처럼 취급한다고 할 수 있다. 이 때문에 데이터베이스와 데이터를 주고받은 작업이나, 데이터의 두 가지 다른 표현 사이를 변환하는 기본적인 작업에도 적지 않은 프로그래밍 노력이 필요하다.
 
-테이블 모듈(Table Module)은 데이터베이스의 테이블당 클래스 하나로 도메인 논리를 구성하며, 클래스의 한 인스턴스가 해당 데이터에 대해 수행하는 여러 프로시저를 포함한다. [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)과의 가장 큰 차이점은 주문이 여러 개인 경우 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)은 주문의 수만큼 객체를 사용하지만, 테이블 모듈은 모든 주문을 객체 하나가 처리한다는 것이다.
+테이블 모듈(Table Module)은 데이터베이스의 테이블당 클래스 하나로 도메인 논리를 구성하며, 클래스의 한 인스턴스가 해당 데이터에 대해 수행하는 여러 프로시저를 포함한다. [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)과의 가장 큰 차이점은 주문이 여러 개인 경우 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)은 주문의 수만큼 객체를 사용하지만, 테이블 모듈은 모든 주문을 객체 하나가 처리한다는 것이다.
 
 ### 작동 원리
 
@@ -40,9 +40,9 @@
 
 테이블 모듈은 그 이름이 나타내는 것처럼 [레코드 집합]()을 사용해 테이블 형식의 데이터에 접근할 때 가장 적합한 패턴이다. 또한 자료구조를 코드에서 가장 중요한 요소로 다루므로 자료구조에 직관적으로 접근할 수 있다.
 
-그러나 테이블 모듈은 복잡한 논리를 구성하는 객체의 강력함을 완전하게 활용하지는 못한다. 직접적인 인스턴스-인스턴스 관계를 만들 수 없고, 다형성이 제대로 작동하지 않는다. 따라서 복잡한 도메인 논리를 처리해야 한다면 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)을 선택하는 것이 좋다. 말하자면 테이블 모듈은 복잡한 논리를 처리하는 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)의 능력 대신에 테이블 기반 자료구조와의 손쉬운 통합 능력을 맞바꾼 패턴이다.
+그러나 테이블 모듈은 복잡한 논리를 구성하는 객체의 강력함을 완전하게 활용하지는 못한다. 직접적인 인스턴스-인스턴스 관계를 만들 수 없고, 다형성이 제대로 작동하지 않는다. 따라서 복잡한 도메인 논리를 처리해야 한다면 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)을 선택하는 것이 좋다. 말하자면 테이블 모듈은 복잡한 논리를 처리하는 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)의 능력 대신에 테이블 기반 자료구조와의 손쉬운 통합 능력을 맞바꾼 패턴이다.
 
-[도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)의 객체와 데이터베이스 테이블이 상대적으로 비슷하다면 [활성 레코드]()를 사용하는 도메인 모델을 사용하는 것이 나을 수 있다. 또한 애플리케이션의 다른 부분이 일반적인 테이블 기반 자료구조에 바탕을 두고 있다면 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-model)과 [활성 레코드]()의 조합보다 테이블 모듈이 더 잘 어울린다. 자바 환경에서 테이블 모듈을 자주 볼 수 없는 것은 바로 이 때문이다. 물론 행 집합이 널리 보급되면 이런 상황은 달라질 수 있다.
+[도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)의 객체와 데이터베이스 테이블이 상대적으로 비슷하다면 [활성 레코드]()를 사용하는 도메인 모델을 사용하는 것이 나을 수 있다. 또한 애플리케이션의 다른 부분이 일반적인 테이블 기반 자료구조에 바탕을 두고 있다면 [도메인 모델](https://github.com/wonder13662/pattern-of-enterprise-application-architecture/tree/main/pattern/domain-logic-pattern/domain-model)과 [활성 레코드]()의 조합보다 테이블 모듈이 더 잘 어울린다. 자바 환경에서 테이블 모듈을 자주 볼 수 없는 것은 바로 이 때문이다. 물론 행 집합이 널리 보급되면 이런 상황은 달라질 수 있다.
 
 이 패턴을 활용하는 데 가장 적합한 환경으로 마이크로소프트 .NET 환경이 있다. .NET(그리고 COM) 환경에서는 [레코드 집합]()이 애플리케이션의 주요 데이터 리포지토리로 사용된다. 레코드 집합을 UI로 전달하면 데이터 인식 위젯으로 정보를 표시할 수 있다. 또한 마이크로소프트 ADO 라이브러리는 관계형 데이터를 레코드 집합으로 접근할 수 있는 훌륭한 매커니즘을 제공한다. 이러한 환경이라면 애플리케이션에서 테이블 모듈을 사용해 비즈니스 논리를 체계적인 방법으로 구현하고 테이블 형식 데이터에서 작동하는 다양한 요소의 기능을 최대한 활용할 수 있다.
 
